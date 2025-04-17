@@ -158,44 +158,4 @@ shapiro.test(df_happy$healthy_life_expectancy)
 shapiro.test(df_happy$freedom_to_make_life_choices)
 shapiro.test(df_happy$generosity)
 
-shapiro.test(df_happy$happiness_score)
-shapiro.test(df_happy$gdp_per_capita)
-shapiro.test(df_happy$social_support)
-shapiro.test(df_happy$healthy_life_expectancy)
-shapiro.test(df_happy$freedom_to_make_life_choices)
-shapiro.test(df_happy$generosity)
 
-
-# Check do we have 0?
-sapply(df_happy[happy_num], function(x) sum(x == 0))
-
-# We need to try log-transform
-df_happy$log_happiness_score <- log(df_happy$happiness_score + 0.001)
-df_happy$log_gdp_per_capita <- log(df_happy$gdp_per_capita + 0.001)
-df_happy$log_social_support <- log(df_happy$social_support + 0.001)
-df_happy$log_healthy_life_expectancy <- log(df_happy$healthy_life_expectancy + 0.001)
-df_happy$log_freedom_to_make_life_choices <- log(df_happy$freedom_to_make_life_choices + 0.001)
-df_happy$log_generosity <- log(df_happy$generosity + 0.001)
-
-# We can see the less p-value for Shapiro-test so it's not good
-shapiro.test(df_happy$log_happiness_score)
-shapiro.test(df_happy$log_gdp_per_capita)
-shapiro.test(df_happy$log_social_support)
-shapiro.test(df_happy$log_healthy_life_expectancy)
-shapiro.test(df_happy$log_freedom_to_make_life_choices)
-shapiro.test(df_happy$log_generosity)
-
-
-df_happy$sqrt_happiness_score <- sqrt(df_happy$happiness_score)
-df_happy$sqrt_gdp_per_capita <- sqrt(df_happy$gdp_per_capita + 0.001)
-df_happy$sqrt_social_support <- sqrt(df_happy$social_support + 0.001)
-df_happy$sqrt_healthy_life_expectancy <- sqrt(df_happy$healthy_life_expectancy + 0.001)
-df_happy$sqrt_freedom_to_make_life_choices <- sqrt(df_happy$freedom_to_make_life_choices + 0.001)
-df_happy$sqrt_generosity <- sqrt(df_happy$generosity + 0.001)
-
-shapiro.test(df_happy$sqrt_happiness_score)
-shapiro.test(df_happy$sqrt_gdp_per_capita)
-shapiro.test(df_happy$sqrt_social_support)
-shapiro.test(df_happy$sqrt_healthy_life_expectancy)
-shapiro.test(df_happy$sqrt_freedom_to_make_life_choices)
-shapiro.test(df_happy$sqrt_generosity)
