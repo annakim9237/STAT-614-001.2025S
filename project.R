@@ -149,8 +149,7 @@ for (reg in regions) {
     cat("95% CI:", round(t_test$conf.int[1], 5), "to", round(t_test$conf.int[2], 5), "\n")
 }
 
-# I need a meeting for this part
-# Shapiro-test
+# Shapiro-test, but it's okay because our sample sizw is enough big.
 shapiro.test(df_happy$happiness_score)
 shapiro.test(df_happy$gdp_per_capita)
 shapiro.test(df_happy$social_support)
