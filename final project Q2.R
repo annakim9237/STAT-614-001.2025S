@@ -57,7 +57,7 @@ ggplot(df_happy, aes(x = factor(year), y = happiness_score, fill = factor(year))
 
 
 # Boxplot to check normality
-ggplot(df_happy, aes(x = region, y = happiness_score, fill = factor(year))) +
+ggplot(df_happy, aes(x = fct_reorder(region, happiness_score), y = happiness_score, fill = factor(year))) +
   geom_boxplot() +
   theme_minimal()+
   labs(title = "Happiness Score by Region (2015 vs 2020)",
@@ -120,6 +120,13 @@ df_2015 <- df_happy %>%
 df_2020 <- df_happy %>% 
   filter(year == 2020) 
 
+
+shapiro.test(df_2015$happiness_score)
+shapiro.test(df_2020$happiness_score)
+
+diff_score <- df_2015$happiness_score - df_2020$happiness_score
+shapiro.test(diff_score)
+
 # Pair t-test
 t.test(df_2015$happiness_score, df_2020$happiness_score, paired = TRUE)
 
@@ -151,6 +158,7 @@ for (reg in regions) {
 
 # Shapiro-test, but it's okay because our sample sizw is enough big.
 shapiro.test(df_happy$happiness_score)
+
 shapiro.test(df_happy$gdp_per_capita)
 shapiro.test(df_happy$social_support)
 shapiro.test(df_happy$healthy_life_expectancy)

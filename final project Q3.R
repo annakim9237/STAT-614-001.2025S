@@ -7,6 +7,7 @@ library(gmodels)
 library(corrplot)
 library(dplyr)
 library(GGally) 
+library(car)
 
 
 df2 <- read_csv("WHR_2020.csv", head(TRUE))
@@ -134,11 +135,31 @@ summary(model54)
 # We can find when we have more than five variables, most of it already have over 0.7 Adjusted R-squred.
 # Especially, model 51 has over 0.73 Adjusted R-squared.
 
+# Multicollinearity
+vif(model51) 
+
+par(mfrow=c(2,2))
+plot(model51)
+
 # Full model 
 model60 <- lm(happiness_score ~ gdp_per_capita + social_support + healthy_life_expectancy + freedom_to_make_life_choices + generosity + perceptions_of_corruption, data = df_multi)
 summary(model60)
 # The full model Adjusted R-squared is 0.738.
 
+# Multicollinearity
+vif(model60) 
+
+plot(model60)
+
 # We can see model 51 and model 60 has similar Adjusted R-squared so we want to compare the performance of the models.
 anova(model60, model51)
 anova(model60, model51)
+
+df_multi[c(13,16,117), c("country", "happiness_score")]
+
+df_multi_clean <- df_multi[-c(13, 16, 117), ]
+
+model_clean <- lm(happiness_score ~ gdp_per_capita + social_support + healthy_life_expectancy + 
+                    freedom_to_make_life_choices + generosity + perceptions_of_corruption, 
+                  data = df_multi_clean)
+summary(model_clean)
