@@ -1,4 +1,4 @@
-options(scipen=100,digits=8) 
+options(scipen=140,digits=8) 
 library(Sleuth3) 
 library(tidyverse)
 library(mosaic) 
@@ -152,7 +152,9 @@ vif(model60)
 plot(model60)
 
 # We can see model 51 and model 60 has similar Adjusted R-squared so we want to compare the performance of the models.
-anova(model60, model51)
+summary(model51)
+summary(model60)
+
 anova(model60, model51)
 
 df_multi[c(13,16,117), c("country", "happiness_score")]
@@ -163,3 +165,18 @@ model_clean <- lm(happiness_score ~ gdp_per_capita + social_support + healthy_li
                     freedom_to_make_life_choices + generosity + perceptions_of_corruption, 
                   data = df_multi_clean)
 summary(model_clean)
+
+anova(model60, model_clean)
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+#Practice using step function
+#Model using Time as quantitative variable
+
+full_model <- lm(happiness_score ~ gdp_per_capita + social_support + healthy_life_expectancy +
+                   freedom_to_make_life_choices + generosity + perceptions_of_corruption, 
+                 data = df_multi)
+summary(full_model)
+
+step_model <- step(full_model, trace = TRUE)
+summary(step_model)
+
