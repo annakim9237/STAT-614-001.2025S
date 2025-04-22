@@ -10,6 +10,18 @@ library(DescTools) # this is for after performing ANOVA -one way
 library(car) #for Levene test
 
 df2 <- read_csv("WHR_2020.csv", head(TRUE))
+
+
+# 1) Split into a named list
+country_by_region <- split(df2$country, df2$region)
+
+# 2) Print each region with its countries
+for(reg in names(country_by_region)) {
+  cat(reg, "(", paste(country_by_region[[reg]], collapse = "; "), ")\n")
+}
+
+
+
 # Happiness Summary descriptive statistics
 df2 %>%
   group_by(region) %>% 
