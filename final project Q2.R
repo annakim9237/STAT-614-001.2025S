@@ -55,6 +55,9 @@ ggplot(df_happy, aes(x = factor(year), y = happiness_score, fill = factor(year))
   labs(title = "Happiness Score by Year",
        x = "Year", y = "Happiness Score", fill = "Year")
 
+# -------------------------------------------------------------------------
+
+
 
 # Boxplot to check normality
 ggplot(df_happy, aes(x = fct_reorder(region, happiness_score), y = happiness_score, fill = factor(year))) +
@@ -88,9 +91,24 @@ colnames(df_happy)
 # numeric columns
 happy_num <- colnames(df_happy)[4:10]
 df_happy_num <- df_happy[happy_num]
-par(mfrow = c(2, 3))
 
 # Histograms for X
+hist(df_2015$happiness_score,
+     main = paste("Histogram of happiness_score(2015)"),
+     xlab = "happiness_score",
+     ylab = "Average life evaluation score (0–10 scale)",
+     col = "skyblue",
+     border = "white")
+
+hist(df_2020$happiness_score,
+     main = paste("Histogram of happiness_score(2020)"),
+     xlab = "happiness_score",
+     ylab = "Average life evaluation score (0–10 scale)",
+     col = "skyblue",
+     border = "white")
+
+par(mfrow = c(2, 3))
+
 for (col in happy_col) {
   hist(df_happy[[col]],
        main = paste("Histogram of", col),
@@ -98,6 +116,7 @@ for (col in happy_col) {
        col = "skyblue",
        border = "white")
 }
+
 
 # X's correlation
 happy_x_num <- colnames(df_happy)[5:10]
@@ -129,6 +148,8 @@ shapiro.test(diff_score)
 
 # Pair t-test
 t.test(df_2015$happiness_score, df_2020$happiness_score, paired = TRUE)
+#A paired t-test comparing happiness scores between 2015 and 2020 revealed a statistically significant decrease (t = -2.34, p = 0.0206).
+#The average happiness score dropped by 0.11 points
 
 # Pair t-test depending on continent - I did only because curious
 df_happy %>%
@@ -155,14 +176,5 @@ for (reg in regions) {
     cat("mean difference:", round(t_test$estimate, 5), "\n")
     cat("95% CI:", round(t_test$conf.int[1], 5), "to", round(t_test$conf.int[2], 5), "\n")
 }
-
-# Shapiro-test, but it's okay because our sample sizw is enough big.
-shapiro.test(df_happy$happiness_score)
-
-shapiro.test(df_happy$gdp_per_capita)
-shapiro.test(df_happy$social_support)
-shapiro.test(df_happy$healthy_life_expectancy)
-shapiro.test(df_happy$freedom_to_make_life_choices)
-shapiro.test(df_happy$generosity)
 
 
