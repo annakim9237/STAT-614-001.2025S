@@ -8,6 +8,7 @@ library(corrplot)
 library(dplyr)
 library(DescTools) # this is for after performing ANOVA -one way
 library(car) #for Levene test
+library(GGally)
 
 df2 <- read_csv("WHR_2020.csv", head(TRUE))
 df1 <- read_csv("WHR_2015.csv", head(TRUE))
@@ -158,30 +159,35 @@ happy_num <- colnames(df_happy)[4:10]
 df_happy_num <- df_happy[happy_num]
 
 # Histograms for X
-hist(df_2015$happiness_score,
+hist(df2015$happiness_score,
      main = paste("Histogram of happiness_score(2015)"),
      xlab = "happiness_score",
      ylab = "Average life evaluation score (0–10 scale)",
      col = "skyblue",
      border = "white")
 
-hist(df_2020$happiness_score,
+hist(df2020$happiness_score,
      main = paste("Histogram of happiness_score(2020)"),
      xlab = "happiness_score",
      ylab = "Average life evaluation score (0–10 scale)",
      col = "skyblue",
      border = "white")
 
-par(mfrow = c(2, 3))
 
-for (col in happy_col) {
-  hist(df_happy[[col]],
-       main = paste("Histogram of", col),
-       xlab = col,
-       col = "skyblue",
+# seven Histograms, use Previous Plots and Next plots to see all
+happy_cols <- names(df_happy_num)
+par(mfrow = c(2, 3),    # 2 rows, 3 columns
+    mar   = c(4, 4, 2, 1))  # adjust margins if you like
+for (col in happy_cols) {
+  hist(df_happy_num[[col]],
+       main   = paste("Histogram of", col),
+       xlab   = col,
+       col    = "skyblue",
        border = "white")
 }
 
+# Reset to a 1×1 plotting grid
+par(mfrow = c(1, 1))
 
 # X's correlation
 happy_x_num <- colnames(df_happy)[5:10]
@@ -192,8 +198,7 @@ corrplot(cor_matrix,
          method = "color", 
          type = "upper", 
          tl.col = "black", 
-         tl.srt = 45, 
-         tl.cex = 0.5,      
+         tl.cex = 0.4,      
          addCoef.col = "black", 
          number.digits = 2)  
 
@@ -257,11 +262,9 @@ df_multi %>%
             Ratio = max(happiness_score)/min(happiness_score)) %>%
   knitr::kable(digits = 2)
 
-ggpairs(df_multi, columns = c(4:10), upper = NULL)+
+ggpairs(df_multi, columns = c(3:9), upper = NULL)+
   ggtitle("Matrix of Scatterplots for brain weight data")+
   theme_bw()
-
-
 
 #SLR  model  of happiness_score on each explanatory variable
 
@@ -400,7 +403,7 @@ model_clean <- lm(happiness_score ~ gdp_per_capita + social_support + healthy_li
                   data = df_multi_clean)
 summary(model_clean)
 
-anova(model60, model_clean)
+
 
 #++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 #Practice using step function
